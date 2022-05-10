@@ -1,0 +1,127 @@
+package com.codecool.WareStoreProject.repositry.dao;
+
+import com.codecool.WareStoreProject.model.Product;
+import com.codecool.WareStoreProject.model.dto.ProductDTO;
+import com.codecool.WareStoreProject.model.enums.ProductStatus;
+import com.codecool.WareStoreProject.model.enums.ProductType;
+import com.codecool.WareStoreProject.model.mapper.ProductMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+@Repository
+public class ProductJdbcDAO implements ProductDAO {
+    private JdbcTemplate template;
+    private ProductMapper mapper;
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Autowired
+    public ProductJdbcDAO(JdbcTemplate template, ProductMapper mapper) {
+        this.template = template;
+        this.mapper = mapper;
+    }
+
+    @Override
+    public Product addProduct(ProductDTO productDTO) {
+        final String SQL = "INSERT INTO product(name, description, product_type, price, status, warehouse_id, " +
+                "destination_id, last_modified) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+        KeyHolder holder = new GeneratedKeyHolder();
+
+        template.update(getPreparedStatementForAddingProduct(SQL, productDTO), holder);
+
+        return getProductById((int) holder.getKeys().get("id"));
+    }
+
+    private PreparedStatementCreator getPreparedStatementForAddingProduct(String sql, ProductDTO productDTO) {
+        return conn -> {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, productDTO.getName());
+            statement.setString(2, productDTO.getDescription());
+            statement.setString(3, productDTO.getProductType().name().toLowerCase());
+            statement.setInt(4, productDTO.getPrice());
+            statement.setString(5, productDTO.getStatus().name().toLowerCase());
+            statement.setInt(6, productDTO.getWarehouseId());
+            statement.setInt(7, productDTO.getDestinationId());
+            statement.setString(8, LocalDateTime.now().format(format).toString());
+
+            return statement;
+        };
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product;";
+        return template.query(SQL, mapper);
+    }
+
+    @Override
+    public List<Product> getAllProductsInWarehouse(int warehouseId) {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product WHERE warehouse_id = ?;";
+        return template.query(SQL, mapper, warehouseId);
+    }
+
+    @Override
+    public List<Product> getProductsByName(String name) {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product WHERE name = ?;";
+        return template.query(SQL, mapper, name);
+    }
+
+    @Override
+    public List<Product> getProductByType(String type) {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product WHERE product_type = ?::product_types;";
+        return template.query(SQL, mapper, type);
+    }
+
+    @Override
+    public List<Product> getProductByStatus(String status) {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product WHERE status = ?::product_status;";
+        return template.query(SQL, mapper, status);
+    }
+
+    @Override
+    public List<Product> getProductByModificationDate(String date) {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product WHERE last_modified = ?::timestamp;";
+        return template.query(SQL, mapper, date);
+    }
+
+    @Override
+    public Product getProductById(int id) {
+        final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
+                " last_modified FROM product WHERE id = ?;";
+        return template.queryForObject(SQL, mapper, id);
+    }
+
+    @Override
+    public void updateProductById(int id, ProductDTO productDTO) {
+        final String SQL = "UPDATE product SET name = ?, description = ?, product_type = ?, price = ?, " +
+                "status = ?, warehouse_id = ?, destination_id = ?, last_modified = ? WHERE id = ?;";
+
+        Object[] args = new Object[]{productDTO.getName(), productDTO.getDescription(), productDTO.getProductType(),
+        productDTO.getPrice(), productDTO.getStatus(), productDTO.getWarehouseId(), productDTO.getDestinationId(),
+        LocalDateTime.now().format(format), id};
+
+        template.update(SQL, args);
+    }
+
+    @Override
+    public void deleteProductById(int id) {
+        final String SQL = "DELETE FROM product WHERE id = ?;";
+
+        template.update(SQL, id);
+    }
+}
