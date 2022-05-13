@@ -2,10 +2,7 @@ package com.codecool.WareStoreProject.repositry.dao;
 
 import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.dto.ProductDTO;
-import com.codecool.WareStoreProject.model.enums.ProductStatus;
-import com.codecool.WareStoreProject.model.enums.ProductType;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProductDAO {
@@ -24,6 +21,10 @@ public interface ProductDAO {
     List<Product> getProductByModificationDate(String date);
 
     Product getProductById(int id);
+
+    boolean sendProductToWarehouse(int productId, int warehouseId);
+
+    boolean receiveProduct(int id);
 
     void updateProductById(int id, ProductDTO productDTO);
 

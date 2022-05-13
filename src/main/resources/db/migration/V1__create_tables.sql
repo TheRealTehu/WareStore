@@ -29,14 +29,14 @@ CREATE TABLE IF NOT EXISTS worker(
     id              serial PRIMARY KEY,
     "name"          varchar(50) NOT NULL,
     "position"      work_positions,
-    salary          DOUBLE PRECISION NOT NULL
+    salary          DOUBLE PRECISION
 );
 
 CREATE TABLE IF NOT EXISTS worker_to_workplace(
     id              serial PRIMARY KEY,
     worker_id       int NOT NULL,
     warehouse_id    int NOT NULL,
-    "date"          date NOT NULL,
+    "date"          timestamp NOT NULL,
     hours_worked    DOUBLE PRECISION NOT NULL
 );
 

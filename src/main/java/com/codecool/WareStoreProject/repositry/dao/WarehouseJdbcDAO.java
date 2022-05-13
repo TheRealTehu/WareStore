@@ -58,7 +58,7 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
     @Override
     public List<Warehouse> getAllWarehouses() {
         final String SQL = "SELECT id, name, address, storage_space, num_of_workers, req_workers, max_workers " +
-                "FROM warehouse;";
+                "FROM warehouse ORDER BY id;";
 
         return template.query(SQL, warehouseMapper);
     }

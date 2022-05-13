@@ -1,5 +1,6 @@
 package com.codecool.WareStoreProject.controller;
 
+import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.Warehouse;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithNeededWorkers;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithoutId;
@@ -44,17 +45,22 @@ public class WarehouseController {
         return service.getWarehouseByAddress(address);
     }
 
+    @GetMapping("/warehouse/{id}")
+    public List<Product> getAllProductsInWarehouse(@PathVariable("id") int warehouseId) {
+        return service.getAllProductsInWarehouse(warehouseId);
+    }
+
     @GetMapping("/workers_needed")
     public List<WarehouseDTOWithNeededWorkers> listWarehousesByNeededWorkers() {
         return service.listWarehousesByNeededWorkers();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/id/{id}")
     public void updateWarehouseById(@PathVariable("id") int id, @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId) {
         service.updateWarehouseById(id, warehouseDTOWithoutId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public void deleteWarehouseById(@PathVariable int id) {
         service.deleteWarehouseById(id);
     }

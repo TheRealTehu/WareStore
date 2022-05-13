@@ -1,5 +1,6 @@
 package com.codecool.WareStoreProject.service;
 
+import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.Warehouse;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithNeededWorkers;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithoutId;
@@ -12,10 +13,12 @@ import java.util.List;
 @Service
 public class WarehouseService {
     private WarehouseDAO warehouseDAO;
+    private ProductService productService;
 
     @Autowired
-    public WarehouseService(WarehouseDAO warehouseDAO) {
+    public WarehouseService(WarehouseDAO warehouseDAO, ProductService productService) {
         this.warehouseDAO = warehouseDAO;
+        this.productService = productService;
     }
 
     public Warehouse addWarehouse(WarehouseDTOWithoutId warehouseDTOWithoutId) {
@@ -40,6 +43,10 @@ public class WarehouseService {
 
     public List<WarehouseDTOWithNeededWorkers> listWarehousesByNeededWorkers() {
         return warehouseDAO.listWarehousesByNeededWorkers();
+    }
+
+    public List<Product> getAllProductsInWarehouse(int warehouseId) {
+        return productService.getAllProductsInWarehouse(warehouseId);
     }
 
     public void updateWarehouseById(int id, WarehouseDTOWithoutId warehouseDTOWithoutId) {

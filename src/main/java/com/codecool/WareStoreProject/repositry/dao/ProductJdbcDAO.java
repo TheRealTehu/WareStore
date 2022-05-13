@@ -3,7 +3,6 @@ package com.codecool.WareStoreProject.repositry.dao;
 import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.dto.ProductDTO;
 import com.codecool.WareStoreProject.model.enums.ProductStatus;
-import com.codecool.WareStoreProject.model.enums.ProductType;
 import com.codecool.WareStoreProject.model.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -104,6 +103,42 @@ public class ProductJdbcDAO implements ProductDAO {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
                 " last_modified FROM product WHERE id = ?;";
         return template.queryForObject(SQL, mapper, id);
+    }
+
+    @Override
+    public boolean sendProductToWarehouse(int productId, int warehouseId) {
+        if (notSendable(productId, warehouseId)) return false;
+
+        final String SQL = "UPDATE product SET status = ?, destination_id = ?, last_modified = ? WHERE id = ?;";
+
+        template.update(SQL, ProductStatus.MOVING.name().toLowerCase(), warehouseId,
+                LocalDateTime.now().format(format), productId);
+
+        return true;
+    }
+
+    private boolean notSendable(int productId, int warehouseId) {
+        Product productToSend = getProductById(productId);
+
+        if(productToSend.getWarehouseId() == warehouseId || !(productToSend.getStatus().equals(ProductStatus.IN_STORAGE))){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean receiveProduct(int id) {
+        Product product = getProductById(id);
+        if(!product.getStatus().equals(ProductStatus.MOVING)){
+            return false;
+        }
+
+        final String SQL = "UPDATE product SET status = ?, warehouse_id = ?, last_modified = ? WHERE id = ?;";
+
+        template.update(SQL, ProductStatus.IN_STORAGE.name().toLowerCase(), product.getDestinationId(),
+                LocalDateTime.now().format(format), id);
+
+        return true;
     }
 
     @Override

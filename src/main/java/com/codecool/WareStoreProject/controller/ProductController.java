@@ -28,11 +28,6 @@ public class ProductController {
         return service.getAllProducts();
     }
 
-    @GetMapping("/warehouse/{id}")
-    public List<Product> getAllProductsInWarehouse(@PathVariable("id") int warehouseId) {
-        return service.getAllProductsInWarehouse(warehouseId);
-    }
-
     @GetMapping("/name/{name}")
     public List<Product> getProductsByName(@PathVariable("name") String name) {
         return service.getProductsByName(name);
