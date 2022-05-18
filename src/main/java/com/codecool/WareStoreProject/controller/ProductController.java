@@ -34,12 +34,12 @@ public class ProductController {
     }
 
     @GetMapping("/type/{type}")
-    public List<Product> getProductByType(@PathVariable("type") ProductType type) {
+    public List<Product> getProductByType(@PathVariable("type") String type) {
         return service.getProductByType(type);
     }
 
     @GetMapping("/status/{status}")
-    public List<Product> getProductByStatus(@PathVariable("status") ProductStatus status) {
+    public List<Product> getProductByStatus(@PathVariable("status") String status) {
         return service.getProductByStatus(status);
     }
 
@@ -48,17 +48,17 @@ public class ProductController {
         return service.getProductByModificationDate(date);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Product getProductById(@PathVariable("id") int id) {
         return service.getProductById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/id/{id}")
     public void updateProductById(@PathVariable("id") int id, @RequestBody ProductDTO productDTO) {
         service.updateProductById(id, productDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public void deleteProductById(@PathVariable("id") int id) {
         service.deleteProductById(id);
     }

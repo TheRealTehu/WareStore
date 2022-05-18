@@ -37,16 +37,16 @@ public class ProductService {
         return productDAO.getProductsByName(name);
     }
 
-    public List<Product> getProductByType(ProductType type) {
-        return productDAO.getProductByType(type.name().toLowerCase());
+    public List<Product> getProductByType(String type) {
+        return productDAO.getProductByType(type.toLowerCase());
     }
 
-    public List<Product> getProductByStatus(ProductStatus status) {
-        return productDAO.getProductByStatus(status.name().toLowerCase());
+    public List<Product> getProductByStatus(String status) {
+        return productDAO.getProductByStatus(status.toLowerCase());
     }
 
     public List<Product> getProductByModificationDate(String date) {
-        final Pattern pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?([zZ]|([\\+-])([01]\\d|2[0-3]):?([0-5]\\d)?)?", Pattern.CASE_INSENSITIVE);
+        final Pattern pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}", Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(date);
 
         if(matcher.matches()){

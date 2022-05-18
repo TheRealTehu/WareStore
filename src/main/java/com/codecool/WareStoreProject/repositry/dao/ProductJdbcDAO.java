@@ -31,13 +31,19 @@ public class ProductJdbcDAO implements ProductDAO {
     @Override
     public Product addProduct(ProductDTO productDTO) {
         final String SQL = "INSERT INTO product(name, description, product_type, price, status, warehouse_id, " +
-                "destination_id, last_modified) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                "destination_id, last_modified) VALUES (?, ?, ?::product_types, ?, ?::product_status, ?, ?, ?::timestamp);";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         template.update(getPreparedStatementForAddingProduct(SQL, productDTO), holder);
 
-        return getProductById((int) holder.getKeys().get("id"));
+        //return getProductById((int)holder.getKeys().get("id"));
+
+        if (holder.getKeys() == null){
+            System.out.println("EJJJJJ");
+        }
+            //TODO: Figure out why getKeys() is null
+        return null;
     }
 
     private PreparedStatementCreator getPreparedStatementForAddingProduct(String sql, ProductDTO productDTO) {
@@ -50,7 +56,7 @@ public class ProductJdbcDAO implements ProductDAO {
             statement.setString(5, productDTO.getStatus().name().toLowerCase());
             statement.setInt(6, productDTO.getWarehouseId());
             statement.setInt(7, productDTO.getDestinationId());
-            statement.setString(8, LocalDateTime.now().format(format).toString());
+            statement.setString(8, LocalDateTime.now().format(format));
 
             return statement;
         };
@@ -59,43 +65,48 @@ public class ProductJdbcDAO implements ProductDAO {
     @Override
     public List<Product> getAllProducts() {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
-                " last_modified FROM product;";
+                " last_modified FROM product ORDER BY id ASC;";
         return template.query(SQL, mapper);
     }
 
     @Override
     public List<Product> getAllProductsInWarehouse(int warehouseId) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
-                " last_modified FROM product WHERE warehouse_id = ?;";
+                " last_modified FROM product WHERE warehouse_id = ? ORDER BY id ASC;";
         return template.query(SQL, mapper, warehouseId);
     }
 
     @Override
     public List<Product> getProductsByName(String name) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
-                " last_modified FROM product WHERE name = ?;";
+                " last_modified FROM product WHERE name = ? ORDER BY warehouse_id ASC;";
         return template.query(SQL, mapper, name);
     }
 
     @Override
     public List<Product> getProductByType(String type) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
-                " last_modified FROM product WHERE product_type = ?::product_types;";
+                " last_modified FROM product WHERE product_type = ?::product_types ORDER BY warehouse_id ASC;";
         return template.query(SQL, mapper, type);
     }
 
     @Override
     public List<Product> getProductByStatus(String status) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
-                " last_modified FROM product WHERE status = ?::product_status;";
+                " last_modified FROM product WHERE status = ?::product_status ORDER BY warehouse_id ASC;";
         return template.query(SQL, mapper, status);
     }
 
     @Override
     public List<Product> getProductByModificationDate(String date) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
-                " last_modified FROM product WHERE last_modified = ?::timestamp;";
-        return template.query(SQL, mapper, date);
+                " last_modified FROM product WHERE last_modified >= ?::timestamp AND last_modified <= ?::timestamp " +
+                "ORDER BY last_modified ASC;";
+
+        String date_start = date + " 00:00:00";
+        String date_end = date + " 23:59:59";
+
+        return template.query(SQL, mapper, date_start, date_end);
     }
 
     @Override
@@ -143,11 +154,11 @@ public class ProductJdbcDAO implements ProductDAO {
 
     @Override
     public void updateProductById(int id, ProductDTO productDTO) {
-        final String SQL = "UPDATE product SET name = ?, description = ?, product_type = ?, price = ?, " +
-                "status = ?, warehouse_id = ?, destination_id = ?, last_modified = ? WHERE id = ?;";
+        final String SQL = "UPDATE product SET name = ?, description = ?, product_type = ?::product_types, price = ?, " +
+                "status = ?::product_status, warehouse_id = ?, destination_id = ?, last_modified = ?::timestamp WHERE id = ?;";
 
-        Object[] args = new Object[]{productDTO.getName(), productDTO.getDescription(), productDTO.getProductType(),
-        productDTO.getPrice(), productDTO.getStatus(), productDTO.getWarehouseId(), productDTO.getDestinationId(),
+        Object[] args = new Object[]{productDTO.getName(), productDTO.getDescription(), productDTO.getProductType().name().toLowerCase(),
+        productDTO.getPrice(), productDTO.getStatus().name().toLowerCase(), productDTO.getWarehouseId(), productDTO.getDestinationId(),
         LocalDateTime.now().format(format), id};
 
         template.update(SQL, args);

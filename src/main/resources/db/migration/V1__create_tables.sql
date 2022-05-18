@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS warehouse(
-    id              serial PRIMARY KEY,
+    id              int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "name"          varchar (30) NOT NULL unique,
     address         varchar (50) NOT NULL unique,
     storage_space   int NOT NULL,
@@ -12,7 +12,7 @@ CREATE TYPE product_types AS ENUM('game', 'console', 'accessory', 'part', 'other
 CREATE TYPE product_status AS ENUM('in_storage', 'reserved', 'moving', 'sold');
 
 CREATE TABLE IF NOT EXISTS product(
-    id              serial PRIMARY KEY,
+    id              int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "name"          varchar(100) NOT NULL,
     description     varchar(500) NOT NULL,
     product_type    product_types NOT NULL,
@@ -25,15 +25,16 @@ CREATE TABLE IF NOT EXISTS product(
 
 CREATE TYPE work_positions AS ENUM('warehouse_worker', 'clerk', 'center_worker', 'it_worker', 'boss');
 
+DROP SEQUENCE IF EXISTS worker;
 CREATE TABLE IF NOT EXISTS worker(
-    id              serial PRIMARY KEY,
+    id              int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "name"          varchar(50) NOT NULL,
     "position"      work_positions,
     salary          DOUBLE PRECISION
 );
 
 CREATE TABLE IF NOT EXISTS worker_to_workplace(
-    id              serial PRIMARY KEY,
+    id              int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     worker_id       int NOT NULL,
     warehouse_id    int NOT NULL,
     "date"          timestamp NOT NULL,

@@ -38,6 +38,7 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
 
         template.update(getPreparedStatementForAddingWarehouse(SQL, warehouseDTOWithoutId), holder);
 
+        //TODO: Must test manually if getKeys() is null
         return getWarehouseById((int) holder.getKeys().get("id"));
     }
 
