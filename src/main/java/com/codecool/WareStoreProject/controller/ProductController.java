@@ -2,8 +2,6 @@ package com.codecool.WareStoreProject.controller;
 
 import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.dto.ProductDTO;
-import com.codecool.WareStoreProject.model.enums.ProductStatus;
-import com.codecool.WareStoreProject.model.enums.ProductType;
 import com.codecool.WareStoreProject.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 

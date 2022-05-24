@@ -36,3 +36,48 @@ VALUES ('Fifa', 'Football videogame', 'game', 22000, 'in_storage', 2, 2, '05-10-
 
 INSERT INTO product("name", description, product_type, price, status, warehouse_id, destination_id, last_modified)
 VALUES ('Fifa', 'Football videogame', 'game', 22000, 'in_storage', 2, 2, '05-10-2022 13:09:42');
+
+/*Worker data*/
+INSERT INTO worker("name", position, salary) VALUES ('John Boss', 'boss', 5000);
+
+INSERT INTO worker("name", position, salary) VALUES ('IT Worker', 'it_worker', 3000);
+
+INSERT INTO worker("name", position, salary) VALUES ('Carol Center', 'center_worker', 4300);
+
+INSERT INTO worker("name", position, salary) VALUES ('Peter Clerkson', 'clerk', 3500);
+
+INSERT INTO worker("name", position, salary) VALUES ('Michael Worker', 'warehouse_worker', 2000);
+
+INSERT INTO worker("name", position, salary) VALUES ('Gordon Worker', 'warehouse_worker', 2000);
+
+INSERT INTO worker("name", position, salary) VALUES ('Best Worker', 'warehouse_worker', 2500);
+
+/*Work simulation*/
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (1, 1, '05-10-2022 08:00:00', 8);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (1, 1, '05-11-2022 08:00:00', 8);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (1, 1, '05-12-2022 08:00:00', 8);
+
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (2, 1, '05-10-2022 08:00:00', 8);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (2, 1, '05-15-2022 08:00:00', 4);
+
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (3, 1, '05-15-2022 08:00:00', 8);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (3, 1, '05-16-2022 08:00:00', 8);
+
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (4, 2, '05-15-2022 08:00:00', 8);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (4, 2, '05-20-2022 08:00:00', 8);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (4, 2, '06-03-2022 08:00:00', 8);
+
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (5, 2, '05-10-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (5, 3, '10-15-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (5, 2, '12-04-2022 08:00:00', 12);
+
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (6, 3, '05-10-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (6, 3, '05-11-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (6, 3, '05-12-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (6, 3, '05-13-2022 08:00:00', 12);
+
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (7, 3, '04-15-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (7, 3, '05-15-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (7, 3, '06-15-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (7, 3, '07-15-2022 08:00:00', 12);
+INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES (7, 3, '08-15-2022 08:00:00', 12);

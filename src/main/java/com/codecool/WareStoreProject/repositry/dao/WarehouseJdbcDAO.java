@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -38,13 +39,12 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
 
         template.update(getPreparedStatementForAddingWarehouse(SQL, warehouseDTOWithoutId), holder);
 
-        //TODO: Must test manually if getKeys() is null
         return getWarehouseById((int) holder.getKeys().get("id"));
     }
 
     private PreparedStatementCreator getPreparedStatementForAddingWarehouse(String sql, WarehouseDTOWithoutId warehouseDTOWithoutId) {
         return conn -> {
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, warehouseDTOWithoutId.getName());
             statement.setString(2, warehouseDTOWithoutId.getAddress());
             statement.setInt(3, warehouseDTOWithoutId.getStorageSpace());

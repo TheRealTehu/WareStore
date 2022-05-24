@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ProductJdbcDAO implements ProductDAO {
     private JdbcTemplate template;
     private ProductMapper mapper;
-    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     public ProductJdbcDAO(JdbcTemplate template, ProductMapper mapper) {
@@ -37,18 +38,12 @@ public class ProductJdbcDAO implements ProductDAO {
 
         template.update(getPreparedStatementForAddingProduct(SQL, productDTO), holder);
 
-        //return getProductById((int)holder.getKeys().get("id"));
-
-        if (holder.getKeys() == null){
-            System.out.println("EJJJJJ");
-        }
-            //TODO: Figure out why getKeys() is null
-        return null;
+        return getProductById((int)holder.getKeys().get("id"));
     }
 
     private PreparedStatementCreator getPreparedStatementForAddingProduct(String sql, ProductDTO productDTO) {
         return conn -> {
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, productDTO.getName());
             statement.setString(2, productDTO.getDescription());
             statement.setString(3, productDTO.getProductType().name().toLowerCase());
