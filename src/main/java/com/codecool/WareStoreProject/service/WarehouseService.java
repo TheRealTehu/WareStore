@@ -29,7 +29,7 @@ public class WarehouseService {
         return warehouseDAO.getAllWarehouses();
     }
 
-    public Warehouse getWarehouseById(int id) {
+    public Warehouse getWarehouseById(long id) {
         return warehouseDAO.getWarehouseById(id);
     }
 
@@ -45,15 +45,15 @@ public class WarehouseService {
         return warehouseDAO.listWarehousesByNeededWorkers();
     }
 
-    public List<Product> getAllProductsInWarehouse(int warehouseId) {
+    public List<Product> getAllProductsInWarehouse(long warehouseId) {
         return productService.getAllProductsInWarehouse(warehouseId);
     }
 
-    public void updateWarehouseById(int id, WarehouseDTOWithoutId warehouseDTOWithoutId) {
+    public void updateWarehouseById(long id, WarehouseDTOWithoutId warehouseDTOWithoutId) {
         warehouseDAO.updateWarehouseById(id, warehouseDTOWithoutId);
     }
 
-    public void deleteWarehouseById(int id) {
+    public void deleteWarehouseById(long id) {
         warehouseDAO.deleteWarehouseById(id);
     }
 }

@@ -11,7 +11,7 @@ public interface WarehouseDAO {
 
     List<Warehouse> getAllWarehouses();
 
-    Warehouse getWarehouseById(int id);
+    Warehouse getWarehouseById(long id);
 
     Warehouse getWarehouseByName(String name);
 
@@ -19,7 +19,7 @@ public interface WarehouseDAO {
 
     List<WarehouseDTOWithNeededWorkers> listWarehousesByNeededWorkers();
 
-    void updateWarehouseById(int id, WarehouseDTOWithoutId warehouseDTOWithoutId);
+    void updateWarehouseById(long id, WarehouseDTOWithoutId warehouseDTOWithoutId);
 
-    void deleteWarehouseById(int id);
+    void deleteWarehouseById(long id);
 }

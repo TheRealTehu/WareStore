@@ -39,7 +39,7 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
 
         template.update(getPreparedStatementForAddingWarehouse(SQL, warehouseDTOWithoutId), holder);
 
-        return getWarehouseById((int) holder.getKeys().get("id"));
+        return getWarehouseById((long) holder.getKeys().get("id"));
     }
 
     private PreparedStatementCreator getPreparedStatementForAddingWarehouse(String sql, WarehouseDTOWithoutId warehouseDTOWithoutId) {
@@ -65,7 +65,7 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
     }
 
     @Override
-    public Warehouse getWarehouseById(int id) {
+    public Warehouse getWarehouseById(long id) {
         final String SQL = "SELECT id, name, address, storage_space, num_of_workers, req_workers, max_workers " +
                 "FROM warehouse WHERE id = ?;";
 
@@ -94,13 +94,13 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
                 "(max_workers - num_of_workers) AS needed_workers, "+
                 "(((max_workers::decimal /100) * req_workers) - ((max_workers::decimal /100) * num_of_workers)) " +
                 "AS needed_worker_percentage " +
-                "FROM warehouse ORDER BY needed_worker_percentage DESC;"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                "FROM warehouse ORDER BY needed_worker_percentage DESC;";
 
         return template.query(SQL, warehouseDTOWithNeededWorkersMapper);
     }
 
     @Override
-    public void updateWarehouseById(int id, WarehouseDTOWithoutId warehouseDTOWithoutId) {
+    public void updateWarehouseById(long id, WarehouseDTOWithoutId warehouseDTOWithoutId) {
         final String SQL = "UPDATE warehouse " +
                 "SET name = ?, address = ?, storage_space = ?, num_of_workers = ?, req_workers = ?, max_workers = ? " +
                 "WHERE id = ?;";
@@ -112,7 +112,7 @@ public class WarehouseJdbcDAO implements WarehouseDAO {
     }
 
     @Override
-    public void deleteWarehouseById(int id) {
+    public void deleteWarehouseById(long id) {
         final String SQL = "DELETE FROM warehouse WHERE id = ?;";
 
         template.update(SQL, id);

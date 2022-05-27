@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
@@ -38,7 +39,7 @@ public class ProductJdbcDAO implements ProductDAO {
 
         template.update(getPreparedStatementForAddingProduct(SQL, productDTO), holder);
 
-        return getProductById((int)holder.getKeys().get("id"));
+        return getProductById((long) holder.getKeys().get("id"));
     }
 
     private PreparedStatementCreator getPreparedStatementForAddingProduct(String sql, ProductDTO productDTO) {
@@ -49,8 +50,8 @@ public class ProductJdbcDAO implements ProductDAO {
             statement.setString(3, productDTO.getProductType().name().toLowerCase());
             statement.setInt(4, productDTO.getPrice());
             statement.setString(5, productDTO.getStatus().name().toLowerCase());
-            statement.setInt(6, productDTO.getWarehouseId());
-            statement.setInt(7, productDTO.getDestinationId());
+            statement.setLong(6, productDTO.getWarehouseId());
+            statement.setLong(7, productDTO.getDestinationId());
             statement.setString(8, LocalDateTime.now().format(format));
 
             return statement;
@@ -65,7 +66,7 @@ public class ProductJdbcDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> getAllProductsInWarehouse(int warehouseId) {
+    public List<Product> getAllProductsInWarehouse(long warehouseId) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
                 " last_modified FROM product WHERE warehouse_id = ? ORDER BY id ASC;";
         return template.query(SQL, mapper, warehouseId);
@@ -105,14 +106,14 @@ public class ProductJdbcDAO implements ProductDAO {
     }
 
     @Override
-    public Product getProductById(int id) {
+    public Product getProductById(long id) {
         final String SQL = "SELECT id, name, description, product_type, price, status, warehouse_id, destination_id, " +
                 " last_modified FROM product WHERE id = ?;";
         return template.queryForObject(SQL, mapper, id);
     }
 
     @Override
-    public boolean sendProductToWarehouse(int productId, int warehouseId) {
+    public boolean sendProductToWarehouse(long productId, long warehouseId) {
         if (notSendable(productId, warehouseId)) return false;
 
         final String SQL = "UPDATE product SET status = ?, destination_id = ?, last_modified = ? WHERE id = ?;";
@@ -123,17 +124,17 @@ public class ProductJdbcDAO implements ProductDAO {
         return true;
     }
 
-    private boolean notSendable(int productId, int warehouseId) {
+    private boolean notSendable(long productId, long warehouseId) {
         Product productToSend = getProductById(productId);
 
-        if(productToSend.getWarehouseId() == warehouseId || !(productToSend.getStatus().equals(ProductStatus.IN_STORAGE))){
+        if(productToSend.getWarehouse().getId() == warehouseId || !(productToSend.getStatus().equals(ProductStatus.IN_STORAGE))){
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean receiveProduct(int id) {
+    public boolean receiveProduct(long id) {
         Product product = getProductById(id);
         if(!product.getStatus().equals(ProductStatus.MOVING)){
             return false;
@@ -141,26 +142,26 @@ public class ProductJdbcDAO implements ProductDAO {
 
         final String SQL = "UPDATE product SET status = ?, warehouse_id = ?, last_modified = ? WHERE id = ?;";
 
-        template.update(SQL, ProductStatus.IN_STORAGE.name().toLowerCase(), product.getDestinationId(),
-                LocalDateTime.now().format(format), id);
+        template.update(SQL, ProductStatus.IN_STORAGE.name().toLowerCase(), product.getDestination().getId(),
+                LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(format), id);
 
         return true;
     }
 
     @Override
-    public void updateProductById(int id, ProductDTO productDTO) {
+    public void updateProductById(long id, ProductDTO productDTO) {
         final String SQL = "UPDATE product SET name = ?, description = ?, product_type = ?::product_types, price = ?, " +
                 "status = ?::product_status, warehouse_id = ?, destination_id = ?, last_modified = ?::timestamp WHERE id = ?;";
 
         Object[] args = new Object[]{productDTO.getName(), productDTO.getDescription(), productDTO.getProductType().name().toLowerCase(),
         productDTO.getPrice(), productDTO.getStatus().name().toLowerCase(), productDTO.getWarehouseId(), productDTO.getDestinationId(),
-        LocalDateTime.now().format(format), id};
+        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(format), id};
 
         template.update(SQL, args);
     }
 
     @Override
-    public void deleteProductById(int id) {
+    public void deleteProductById(long id) {
         final String SQL = "DELETE FROM product WHERE id = ?;";
 
         template.update(SQL, id);

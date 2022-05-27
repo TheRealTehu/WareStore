@@ -16,14 +16,14 @@ public class ProductMapper implements RowMapper<Product> {
     @Override
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
         Product product = new Product();
-        product.setId(rs.getInt("id"));
+        product.setId(rs.getLong("id"));
         product.setName(rs.getString("name"));
         product.setDescription(rs.getString("description"));
         product.setProductType(ProductType.valueOf(rs.getString("product_type").toUpperCase()));
         product.setPrice(rs.getInt("price"));
         product.setStatus(ProductStatus.valueOf(rs.getString("status").toUpperCase()));
-        product.setWarehouseId(rs.getInt("warehouse_id"));
-        product.setDestinationId((rs.getInt("destination_id")));
+        //product.setWarehouseId(rs.getLong("warehouse_id"));
+        //product.setDestinationId((rs.getLong("destination_id")));
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

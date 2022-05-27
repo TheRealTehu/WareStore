@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class WarehouseDTOWithNeededWorkers {
-    private int id;
+    private long id;
     private String name;
     private String address;
     @JsonProperty("storage_space")

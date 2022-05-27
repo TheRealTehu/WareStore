@@ -2,8 +2,6 @@ package com.codecool.WareStoreProject.service;
 
 import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.dto.ProductDTO;
-import com.codecool.WareStoreProject.model.enums.ProductStatus;
-import com.codecool.WareStoreProject.model.enums.ProductType;
 import com.codecool.WareStoreProject.repositry.dao.ProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +27,7 @@ public class ProductService {
         return productDAO.getAllProducts();
     }
 
-    public List<Product> getAllProductsInWarehouse(int warehouseId) {
+    public List<Product> getAllProductsInWarehouse(long warehouseId) {
         return productDAO.getAllProductsInWarehouse(warehouseId);
     }
 
@@ -56,15 +54,15 @@ public class ProductService {
         return null;
     }
 
-    public Product getProductById(int id) {
+    public Product getProductById(long id) {
         return productDAO.getProductById(id);
     }
 
-    public void updateProductById(int id, ProductDTO productDTO) {
+    public void updateProductById(long id, ProductDTO productDTO) {
         productDAO.updateProductById(id, productDTO);
     }
 
-    public void deleteProductById(int id) {
+    public void deleteProductById(long id) {
         productDAO.deleteProductById(id);
     }
 }

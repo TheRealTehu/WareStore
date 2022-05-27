@@ -43,7 +43,7 @@ public class WorkerJdbcDAO implements WorkerDAO{
 
         template.update(getPreparedStatementForAddingWorker(SQL, workerDTO), holder);
 
-        return getWorkerById((int) holder.getKeys().get("id"));
+        return getWorkerById((long) holder.getKeys().get("id"));
     }
 
     private PreparedStatementCreator getPreparedStatementForAddingWorker(String sql, WorkerDTO workerDTO) {
@@ -65,7 +65,7 @@ public class WorkerJdbcDAO implements WorkerDAO{
     }
 
     @Override
-    public Worker getWorkerById(int id) {
+    public Worker getWorkerById(long id) {
         final String SQL = "SELECT id, name, position, salary FROM worker WHERE id = ?;";
 
         return template.queryForObject(SQL, workerMapper, id);
@@ -79,7 +79,7 @@ public class WorkerJdbcDAO implements WorkerDAO{
     }
 
     @Override
-    public Double getWorkersSalaryInMonth(int id, String month) {
+    public Double getWorkersSalaryInMonth(long id, String month) {
         final String SQL = "SELECT SUM(worker_to_workplace.hours_worked * worker.salary) " +
                 "FROM worker_to_workplace JOIN worker ON worker.id = worker_to_workplace.worker_id " +
                 "WHERE worker_to_workplace.worker_id = ? " +
@@ -109,7 +109,7 @@ public class WorkerJdbcDAO implements WorkerDAO{
     }
 
     @Override
-    public Double getWorkersSalaryBetweenDates(int id, String start, String end) {
+    public Double getWorkersSalaryBetweenDates(long id, String start, String end) {
         final String SQL = "SELECT SUM(worker_to_workplace.hours_worked * worker.salary) " +
                 "FROM worker_to_workplace JOIN worker ON worker.id = worker_to_workplace.worker_id " +
                 "WHERE worker_to_workplace.worker_id = ? " +
@@ -119,7 +119,7 @@ public class WorkerJdbcDAO implements WorkerDAO{
     }
 
     @Override
-    public void addWorkToWorker(int workerId, int warehouseId, int hoursWorked) {
+    public void addWorkToWorker(long workerId, long warehouseId, int hoursWorked) {
         final String SQL = "INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) " +
                 "VALUES(?, ?, ?, ?);";
 
@@ -127,21 +127,21 @@ public class WorkerJdbcDAO implements WorkerDAO{
     }
 
     @Override
-    public List<Workday> listAllWorkdaysForWorker(int workerId){
+    public List<Workday> listAllWorkdaysForWorker(long workerId){
         final String SQL = "SELECT id, worker_id, warehouse_id, date, hours_worked FROM worker_to_workplace WHERE worker_id = ?;";
 
         return template.query(SQL, workdayMapper, workerId);
     }
 
     @Override
-    public void updateWorkerById(int id, WorkerDTO workerDTO) {
+    public void updateWorkerById(long id, WorkerDTO workerDTO) {
         final String SQL = "UPDATE worker SET name = ?, position = ?::work_positions, salary = ? WHERE id = ?;";
 
         template.update(SQL, workerDTO.getName(), workerDTO.getPosition().name().toLowerCase(), workerDTO.getSalary(), id);
     }
 
     @Override
-    public void deleteWorkerById(int id) {
+    public void deleteWorkerById(long id) {
         final String SQL = "DELETE FROM worker WHERE id = ?;";
 
         template.update(SQL, id);

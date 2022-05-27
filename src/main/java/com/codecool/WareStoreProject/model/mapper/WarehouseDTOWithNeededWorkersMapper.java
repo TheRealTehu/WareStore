@@ -12,7 +12,7 @@ public class WarehouseDTOWithNeededWorkersMapper implements RowMapper<WarehouseD
     @Override
     public WarehouseDTOWithNeededWorkers mapRow(ResultSet rs, int rowNum) throws SQLException {
         WarehouseDTOWithNeededWorkers warehouseDTOWithNeededWorkers = new WarehouseDTOWithNeededWorkers();
-        warehouseDTOWithNeededWorkers.setId(rs.getInt("id"));
+        warehouseDTOWithNeededWorkers.setId(rs.getLong("id"));
         warehouseDTOWithNeededWorkers.setName(rs.getString("name"));
         warehouseDTOWithNeededWorkers.setAddress(rs.getString("address"));
         warehouseDTOWithNeededWorkers.setStorageSpace(rs.getInt("storage_space"));

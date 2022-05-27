@@ -31,7 +31,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/id/{id}")
-    public Warehouse getWarehouseById(@PathVariable("id") int id) {
+    public Warehouse getWarehouseById(@PathVariable("id") long id) {
         return service.getWarehouseById(id);
     }
 
@@ -46,7 +46,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/warehouse/{id}")
-    public List<Product> getAllProductsInWarehouse(@PathVariable("id") int warehouseId) {
+    public List<Product> getAllProductsInWarehouse(@PathVariable("id") long warehouseId) {
         return service.getAllProductsInWarehouse(warehouseId);
     }
 
@@ -56,12 +56,12 @@ public class WarehouseController {
     }
 
     @PutMapping("/id/{id}")
-    public void updateWarehouseById(@PathVariable("id") int id, @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId) {
+    public void updateWarehouseById(@PathVariable("id") long id, @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId) {
         service.updateWarehouseById(id, warehouseDTOWithoutId);
     }
 
     @DeleteMapping("/id/{id}")
-    public void deleteWarehouseById(@PathVariable int id) {
+    public void deleteWarehouseById(@PathVariable long id) {
         service.deleteWarehouseById(id);
     }
 }

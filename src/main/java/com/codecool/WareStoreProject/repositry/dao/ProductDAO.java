@@ -10,7 +10,7 @@ public interface ProductDAO {
 
     List<Product> getAllProducts();
 
-    List<Product> getAllProductsInWarehouse(int warehouseId);
+    List<Product> getAllProductsInWarehouse(long warehouseId);
 
     List<Product> getProductsByName(String name);
 
@@ -20,13 +20,13 @@ public interface ProductDAO {
 
     List<Product> getProductByModificationDate(String date);
 
-    Product getProductById(int id);
+    Product getProductById(long id);
 
-    boolean sendProductToWarehouse(int productId, int warehouseId);
+    boolean sendProductToWarehouse(long productId, long warehouseId);
 
-    boolean receiveProduct(int id);
+    boolean receiveProduct(long id);
 
-    void updateProductById(int id, ProductDTO productDTO);
+    void updateProductById(long id, ProductDTO productDTO);
 
-    void deleteProductById(int id);
+    void deleteProductById(long id);
 }

@@ -14,7 +14,7 @@ public class WorkerMapper implements RowMapper<Worker> {
     public Worker mapRow(ResultSet rs, int rowNum) throws SQLException {
         Worker worker = new Worker();
 
-        worker.setId(rs.getInt("id"));
+        worker.setId(rs.getLong("id"));
         worker.setName(rs.getString("name"));
         worker.setPosition(WorkPosition.valueOf(rs.getString("position").toUpperCase()));
         worker.setSalary(rs.getDouble("salary"));

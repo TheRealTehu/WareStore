@@ -47,17 +47,17 @@ public class ProductController {
     }
 
     @GetMapping("/id/{id}")
-    public Product getProductById(@PathVariable("id") int id) {
+    public Product getProductById(@PathVariable("id") long id) {
         return service.getProductById(id);
     }
 
     @PutMapping("/id/{id}")
-    public void updateProductById(@PathVariable("id") int id, @RequestBody ProductDTO productDTO) {
+    public void updateProductById(@PathVariable("id") long id, @RequestBody ProductDTO productDTO) {
         service.updateProductById(id, productDTO);
     }
 
     @DeleteMapping("/id/{id}")
-    public void deleteProductById(@PathVariable("id") int id) {
+    public void deleteProductById(@PathVariable("id") long id) {
         service.deleteProductById(id);
     }
 }

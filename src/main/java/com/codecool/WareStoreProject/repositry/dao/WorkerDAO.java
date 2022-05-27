@@ -11,19 +11,19 @@ public interface WorkerDAO {
 
     List<Worker> listAllWorkers();
 
-    Worker getWorkerById(int id);
+    Worker getWorkerById(long id);
 
     List<Worker> listWorkersInGivenPosition(String position);
 
-    Double getWorkersSalaryInMonth(int id, String month);
+    Double getWorkersSalaryInMonth(long id, String month);
 
-    Double getWorkersSalaryBetweenDates(int id, String start, String end);
+    Double getWorkersSalaryBetweenDates(long id, String start, String end);
 
-    void addWorkToWorker(int workerId, int warehouseId, int hoursWorked);
+    void addWorkToWorker(long workerId, long warehouseId, int hoursWorked);
 
-    List<Workday> listAllWorkdaysForWorker(int workerId);
+    List<Workday> listAllWorkdaysForWorker(long workerId);
 
-    void updateWorkerById(int id, WorkerDTO workerDTO);
+    void updateWorkerById(long id, WorkerDTO workerDTO);
 
-    void deleteWorkerById(int id);
+    void deleteWorkerById(long id);
 }

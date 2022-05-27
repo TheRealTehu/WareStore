@@ -30,7 +30,7 @@ public class WorkerController {
     }
 
     @GetMapping("/id/{id}")
-    public Worker getWorkerById(@PathVariable("id") int id) {
+    public Worker getWorkerById(@PathVariable("id") long id) {
         return service.getWorkerById(id);
     }
 
@@ -41,34 +41,34 @@ public class WorkerController {
 
     //TODO: refactor to use requestparam
     @GetMapping("/salary/{id}/month/{month}")
-    public Double getWorkersSalaryInMonth(@PathVariable("id") int id, @PathVariable("month") String month) {
+    public Double getWorkersSalaryInMonth(@PathVariable("id") long id, @PathVariable("month") String month) {
         return service.getWorkersSalaryInMonth(id, month);
     }
 
     //TODO: refactor to use requestparam
     @GetMapping("/salary/{id}/start/{start}/end/{end}")
-    public Double getWorkersSalaryBetweenDates(@PathVariable("id")int id, @PathVariable("start")String start, @PathVariable("end") String end) {
+    public Double getWorkersSalaryBetweenDates(@PathVariable("id") long id, @PathVariable("start")String start, @PathVariable("end") String end) {
         return service.getWorkersSalaryBetweenDates(id, start, end);
     }
 
     //TODO: refactor to use requestparam
     @PostMapping("/work/id/{id}/warehouse/{warehouse_id}/hours/{hours}")
-    public void addWorkToWorker(@PathVariable("id") int workerId, @PathVariable("warehouse_id") int warehouseId, @PathVariable("hours") int hoursWorked) {
+    public void addWorkToWorker(@PathVariable("id") long workerId, @PathVariable("warehouse_id") int warehouseId, @PathVariable("hours") int hoursWorked) {
         service.addWorkToWorker(workerId, warehouseId, hoursWorked);
     }
 
     @GetMapping("/work/{id}")
-    public List<Workday> listAllWorkdaysForWorker(@PathVariable("id") int workerId) {
+    public List<Workday> listAllWorkdaysForWorker(@PathVariable("id") long workerId) {
         return service.listAllWorkdaysForWorker(workerId);
     }
 
     @PutMapping("/id/{id}")
-    public void updateWorkerById(@PathVariable("id") int id, @RequestBody WorkerDTO workerDTO) {
+    public void updateWorkerById(@PathVariable("id") long id, @RequestBody WorkerDTO workerDTO) {
         service.updateWorkerById(id, workerDTO);
     }
 
     @DeleteMapping("/id/{id}")
-    public void deleteWorkerById(@PathVariable("id") int id) {
+    public void deleteWorkerById(@PathVariable("id") long id) {
         service.deleteWorkerById(id);
     }
 }

@@ -26,7 +26,7 @@ public class WorkerService {
         return workerDAO.listAllWorkers();
     }
 
-    public Worker getWorkerById(int id) {
+    public Worker getWorkerById(long id) {
         return workerDAO.getWorkerById(id);
     }
 
@@ -34,27 +34,27 @@ public class WorkerService {
         return workerDAO.listWorkersInGivenPosition(position);
     }
 
-    public Double getWorkersSalaryInMonth(int id, String month) {
+    public Double getWorkersSalaryInMonth(long id, String month) {
         return workerDAO.getWorkersSalaryInMonth(id, month);
     }
 
-    public Double getWorkersSalaryBetweenDates(int id, String start, String end) {
+    public Double getWorkersSalaryBetweenDates(long id, String start, String end) {
         return workerDAO.getWorkersSalaryBetweenDates(id, start, end);
     }
 
-    public void addWorkToWorker(int workerId, int warehouseId, int hoursWorked) {
+    public void addWorkToWorker(long workerId, long warehouseId, int hoursWorked) {
         workerDAO.addWorkToWorker(workerId, warehouseId, hoursWorked);
     }
 
-    public List<Workday> listAllWorkdaysForWorker(int workerId) {
+    public List<Workday> listAllWorkdaysForWorker(long workerId) {
         return workerDAO.listAllWorkdaysForWorker(workerId);
     }
 
-    public void updateWorkerById(int id, WorkerDTO workerDTO) {
+    public void updateWorkerById(long id, WorkerDTO workerDTO) {
         workerDAO.updateWorkerById(id, workerDTO);
     }
 
-    public void deleteWorkerById(int id) {
+    public void deleteWorkerById(long id) {
         workerDAO.deleteWorkerById(id);
     }
 }
