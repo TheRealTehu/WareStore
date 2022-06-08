@@ -1,5 +1,6 @@
 package com.codecool.WareStoreProject.model;
 
+import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithoutId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,4 +36,13 @@ public class Warehouse {
     @JsonProperty("max_workers")
     @Column(name="max_workers", nullable=false, unique=false)
     private int maxWorkers;
+
+    public Warehouse(WarehouseDTOWithoutId warehouseDTOWithoutId) {
+        this.name = warehouseDTOWithoutId.getName();
+        this.address = warehouseDTOWithoutId.getAddress();
+        this.storageSpace = warehouseDTOWithoutId.getStorageSpace();
+        this.numOfWorkers = warehouseDTOWithoutId.getNumOfWorkers();
+        this.reqWorkers = warehouseDTOWithoutId.getReqWorkers();
+        this.maxWorkers = warehouseDTOWithoutId.getMaxWorkers();
+    }
 }

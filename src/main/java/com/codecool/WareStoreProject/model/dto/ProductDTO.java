@@ -2,7 +2,6 @@ package com.codecool.WareStoreProject.model.dto;
 
 import com.codecool.WareStoreProject.model.enums.ProductStatus;
 import com.codecool.WareStoreProject.model.enums.ProductType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,12 +10,9 @@ import lombok.Data;
 public class ProductDTO {
     private String name;
     private String description;
-    @JsonProperty("product_type")
     private ProductType productType;
     private int price;
     private ProductStatus status;
-    @JsonProperty("warehouse_id")
-    private int warehouseId;
-    @JsonProperty("destination_id")
-    private int destinationId;
+    private long warehouseId;
+    private long destinationId;
 }

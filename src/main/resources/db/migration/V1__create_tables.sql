@@ -9,29 +9,24 @@ CREATE TABLE IF NOT EXISTS warehouse(
     primary key (id)
 );
 
-CREATE TYPE product_types AS ENUM('game', 'console', 'accessory', 'part', 'other');
-CREATE TYPE product_status AS ENUM('in_storage', 'reserved', 'moving', 'sold');
-
 CREATE TABLE IF NOT EXISTS product(
     id              bigserial not null,
     "name"          varchar(100) NOT NULL,
     description     varchar(500) NOT NULL,
-    product_type    product_types NOT NULL,
+    product_type    varchar(50) NOT NULL,
     price           int4 NOT NULL,
-    status          product_status NOT NULL,
+    status          varchar(50) NOT NULL,
     warehouse_id    int8,
     destination_id  int8,
     last_modified   timestamp,
     primary key (id)
 );
 
-CREATE TYPE work_positions AS ENUM('warehouse_worker', 'clerk', 'center_worker', 'it_worker', 'boss');
-
 DROP SEQUENCE IF EXISTS worker;
 CREATE TABLE IF NOT EXISTS worker(
     id              bigserial not null,
     "name"          varchar(50) NOT NULL,
-    "position"      work_positions,
+    "position"      varchar(50),
     salary          float8,
     primary key (id)
 );

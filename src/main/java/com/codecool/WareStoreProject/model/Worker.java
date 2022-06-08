@@ -1,5 +1,6 @@
 package com.codecool.WareStoreProject.model;
 
+import com.codecool.WareStoreProject.model.dto.WorkerDTO;
 import com.codecool.WareStoreProject.model.enums.WorkPosition;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,13 @@ public class Worker {
     @Column(name="name", length=50, nullable=false, unique=false)
     private String name;
     @Column(name="position", nullable=false, unique=false)
-    @Enumerated(EnumType.STRING)
     private WorkPosition position;
     @Column(name="salary", nullable=true, unique=false)
     private double salary;
+
+    public Worker(WorkerDTO workerDTO) {
+        this.name = workerDTO.getName();
+        this.position = workerDTO.getPosition();
+        this.salary = workerDTO.getSalary();
+    }
 }

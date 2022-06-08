@@ -121,7 +121,7 @@ public class WorkerJdbcDAO implements WorkerDAO{
     @Override
     public void addWorkToWorker(long workerId, long warehouseId, int hoursWorked) {
         final String SQL = "INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) " +
-                "VALUES(?, ?, ?, ?);";
+                "VALUES(?, ?, ?::timestamp, ?);";
 
         template.update(SQL, workerId, warehouseId, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), hoursWorked);
     }
