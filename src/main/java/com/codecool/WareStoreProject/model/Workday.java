@@ -16,16 +16,16 @@ public class Workday {
     private long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "worker_id", referencedColumnName = "id", insertable=true, updatable=true, foreignKey = @ForeignKey(name = "fk_workday_worker"))
+    @JoinColumn(name = "worker_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_workday_worker"))
     private Worker worker;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", insertable=true, updatable=true, foreignKey = @ForeignKey(name = "fk_workday_warehouse"))
+    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_workday_warehouse"))
     private Warehouse warehouse;
 
-    @Column(name="date", nullable=false, unique=false)
+    @Column(name="date", nullable=false)
     private Timestamp date;
 
-    @Column(name="hours_worked", nullable=false, unique=false)
+    @Column(name="hours_worked", nullable=false)
     private double hoursWorked;
 }

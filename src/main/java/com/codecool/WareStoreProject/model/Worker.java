@@ -14,11 +14,11 @@ public class Worker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name="name", length=50, nullable=false, unique=false)
+    @Column(name="name", length=50, nullable=false)
     private String name;
-    @Column(name="position", nullable=false, unique=false)
+    @Column(name="position", nullable=false)
     private WorkPosition position;
-    @Column(name="salary", nullable=true, unique=false)
+    @Column(name="salary")
     private double salary;
 
     public Worker(WorkerDTO workerDTO) {

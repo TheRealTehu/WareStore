@@ -17,8 +17,8 @@ public interface WarehouseJPARepository extends JpaRepository<Warehouse, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Warehouse SET name =:name, address =:address, storageSpace =:storageSpace, numOfWorkers =:numOfWorkers, " +
-            "reqWorkers =:reqWorkers, maxWorkers =:maxWorkers WHERE id =:id")
+    @Query(value = "UPDATE Warehouse SET name =:name, address =:address, storageSpace =:storageSpace, " +
+            "numOfWorkers =:numOfWorkers, reqWorkers =:reqWorkers, maxWorkers =:maxWorkers WHERE id =:id")
     void updateWarehouse(@Param("name") String name, @Param("address") String address,
                          @Param("storageSpace") int storageSpace, @Param("numOfWorkers") int numOfWorkers,
                          @Param("reqWorkers") int reqWorkers, @Param("maxWorkers") int maxWorkers, @Param("id") long id);

@@ -23,7 +23,7 @@ public interface ProductJPARepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p FROM Product p WHERE p.name =:name ORDER BY p.warehouse.id")
     List<Product> findByName(@Param("name") String name);
 
-    @Query(value = "SELECT p FROM Product p WHERE p.productType = :type ORDER BY p.warehouse.id")
+    @Query(value = "SELECT p FROM Product p WHERE p.productType =:type ORDER BY p.warehouse.id")
     List<Product> findByProductType(@Param("type") ProductType type);
 
     @Query(value = "SELECT p FROM Product p WHERE p.status =:status ORDER BY p.warehouse.id")

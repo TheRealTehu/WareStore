@@ -22,19 +22,19 @@ public class Warehouse {
     private String address;
 
     @JsonProperty("storage_space")
-    @Column(name="storage_space", nullable=false, unique=false)
+    @Column(name="storage_space", nullable=false)
     private int storageSpace;
 
     @JsonProperty("num_of_workers")
-    @Column(name="num_of_workers", nullable=false, unique=false)
+    @Column(name="num_of_workers", nullable=false)
     private int numOfWorkers;
 
     @JsonProperty("req_workers")
-    @Column(name="req_workers", nullable=false, unique=false)
+    @Column(name="req_workers", nullable=false)
     private int reqWorkers;
 
     @JsonProperty("max_workers")
-    @Column(name="max_workers", nullable=false, unique=false)
+    @Column(name="max_workers", nullable=false)
     private int maxWorkers;
 
     public Warehouse(WarehouseDTOWithoutId warehouseDTOWithoutId) {

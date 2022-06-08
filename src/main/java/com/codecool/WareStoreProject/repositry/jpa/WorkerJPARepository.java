@@ -21,13 +21,15 @@ public interface WorkerJPARepository extends JpaRepository<Worker, Long> {
     @Query(value = "SELECT SUM(workday.hoursWorked * worker.salary) FROM Worker worker " +
             "join Workday workday ON worker.id = workday.worker.id " +
             "WHERE worker.id =:id AND workday.date >=:startDate AND workday.date <=:endDate")
-    Double getSalaryBetweenDates(@Param("id") long id, @Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate);
+    Double getSalaryBetweenDates(@Param("id") long id, @Param("startDate") Timestamp startDate,
+                                 @Param("endDate") Timestamp endDate);
 
-    @Query(value = "INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) VALUES(?, ?, CAST(? AS timestamp), ?)",
-            nativeQuery = true)
+    @Query(value = "INSERT INTO worker_to_workplace(worker_id, warehouse_id, date, hours_worked) " +
+            "VALUES(?, ?, CAST(? AS timestamp), ?)", nativeQuery = true)
     void addWorkToWorker(long workerId, long warehouseId, Timestamp date, double hoursWorked);
 
-    @Query(value = "SELECT workday FROM Workday workday join Worker worker ON workday.worker.id = worker.id where workday.worker =:worker")
+    @Query(value = "SELECT workday FROM Workday workday join Worker worker ON workday.worker.id = worker.id " +
+            "where workday.worker =:worker")
     List<Workday> listWorkdaysForWorker(@Param("worker") Worker worker);
 
     @Modifying
