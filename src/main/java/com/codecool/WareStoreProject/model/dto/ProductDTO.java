@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @AllArgsConstructor
 public class ProductDTO {
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
     @JsonProperty("product_type")
     private ProductType productType;

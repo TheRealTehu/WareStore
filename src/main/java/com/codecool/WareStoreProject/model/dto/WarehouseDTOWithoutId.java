@@ -4,10 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 @Data
 @AllArgsConstructor
 public class WarehouseDTOWithoutId {
+    @NotBlank
     private String name;
+    @NotBlank
+    @Pattern(regexp = "[1-9][0-9]{3}\\s[A-Z][a-z]+\\s[A-Z][a-z]+.*[a-zA-Z]+\\s[a-zA-Z][a-z]+\\s[0-9]+",
+            message = "Correct address format: 9999 Cityname Street Name street 99")
     private String address;
     @JsonProperty("storage_space")
     private int storageSpace;

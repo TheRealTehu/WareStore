@@ -5,15 +5,21 @@ import com.codecool.WareStoreProject.model.Warehouse;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithNeededWorkers;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithoutId;
 import com.codecool.WareStoreProject.service.WarehouseService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/warehouse")
 public class WarehouseController {
     private WarehouseService service;
+    private final Logger logger = LogManager.getLogger(WarehouseController.class);
 
     @Autowired
     public WarehouseController(WarehouseService service) {
@@ -21,8 +27,16 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public Warehouse addWarehouse(@RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId) {
-        return service.addWarehouse(warehouseDTOWithoutId);
+    public Warehouse addWarehouse(@Valid @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId, BindingResult br) {
+        if (br.hasErrors()) {
+            logger.warn("CANNOT ADD WAREHOUSE");
+            for (ObjectError error : br.getAllErrors()) {
+                logger.error(error.getDefaultMessage());
+            }
+            return null;
+        } else {
+            return service.addWarehouse(warehouseDTOWithoutId);
+        }
     }
 
     @GetMapping
@@ -56,8 +70,16 @@ public class WarehouseController {
     }
 
     @PutMapping("/id/{id}")
-    public void updateWarehouseById(@PathVariable("id") long id, @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId) {
-        service.updateWarehouseById(id, warehouseDTOWithoutId);
+    public void updateWarehouseById(@PathVariable("id") long id,
+                                    @Valid @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId, BindingResult br) {
+        if (br.hasErrors()) {
+            logger.warn("CANNOT UPDATE WAREHOUSE");
+            for (ObjectError error: br.getAllErrors()) {
+                logger.error(error.getDefaultMessage());
+            }
+        } else {
+            service.updateWarehouseById(id, warehouseDTOWithoutId);
+        }
     }
 
     @DeleteMapping("/id/{id}")

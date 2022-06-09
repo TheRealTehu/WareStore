@@ -4,15 +4,21 @@ import com.codecool.WareStoreProject.model.Workday;
 import com.codecool.WareStoreProject.model.Worker;
 import com.codecool.WareStoreProject.model.dto.WorkerDTO;
 import com.codecool.WareStoreProject.service.WorkerService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/worker")
 public class WorkerController {
     private WorkerService service;
+    private final Logger logger = LogManager.getLogger(WorkerController.class);
 
     @Autowired
     public WorkerController(WorkerService service) {
@@ -20,8 +26,16 @@ public class WorkerController {
     }
 
     @PostMapping
-    public Worker addWorker(@RequestBody WorkerDTO workerDTO) {
-        return service.addWorker(workerDTO);
+    public Worker addWorker(@Valid @RequestBody WorkerDTO workerDTO, BindingResult br) {
+        if (br.hasErrors()) {
+            logger.warn("CANNOT ADD WORKER");
+            for (ObjectError error: br.getAllErrors()) {
+                logger.error(error.getDefaultMessage());
+            }
+            return null;
+        } else {
+            return service.addWorker(workerDTO);
+        }
     }
 
     @GetMapping
@@ -47,7 +61,7 @@ public class WorkerController {
 
     //TODO: refactor to use requestparam
     @GetMapping("/salary/{id}/start/{start}/end/{end}")
-    public Double getWorkersSalaryBetweenDates(@PathVariable("id") long id, @PathVariable("start")String start, @PathVariable("end") String end) {
+    public Double getWorkersSalaryBetweenDates(@PathVariable("id") long id, @PathVariable("start") String start, @PathVariable("end") String end) {
         return service.getWorkersSalaryBetweenDates(id, start, end);
     }
 
@@ -63,8 +77,15 @@ public class WorkerController {
     }
 
     @PutMapping("/id/{id}")
-    public void updateWorkerById(@PathVariable("id") long id, @RequestBody WorkerDTO workerDTO) {
-        service.updateWorkerById(id, workerDTO);
+    public void updateWorkerById(@PathVariable("id") long id, @Valid @RequestBody WorkerDTO workerDTO, BindingResult br) {
+        if (br.hasErrors()) {
+            logger.warn("CANNOT UPDATE WORKER");
+            for (ObjectError error: br.getAllErrors()) {
+                logger.error(error.getDefaultMessage());
+            }
+        } else {
+            service.updateWorkerById(id, workerDTO);
+        }
     }
 
     @DeleteMapping("/id/{id}")

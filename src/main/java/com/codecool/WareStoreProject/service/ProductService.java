@@ -7,6 +7,8 @@ import com.codecool.WareStoreProject.model.enums.ProductStatus;
 import com.codecool.WareStoreProject.model.enums.ProductType;
 import com.codecool.WareStoreProject.repositry.jpa.ProductJPARepository;
 import com.codecool.WareStoreProject.repositry.jpa.WarehouseJPARepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class ProductService {
     private ProductJPARepository productRepository;
     private WarehouseJPARepository warehouseRepository;
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final Logger logger = LogManager.getLogger(ProductService.class);
 
     @Autowired
     public ProductService(ProductJPARepository productRepository, WarehouseJPARepository warehouseRepository) {
@@ -31,7 +34,7 @@ public class ProductService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    public Product addProduct(ProductDTO productDTO){
+    public Product addProduct(ProductDTO productDTO) {
 
         Warehouse warehouse = warehouseRepository.findById(productDTO.getWarehouseId()).get();
         Warehouse destination = warehouseRepository.findById(productDTO.getDestinationId()).get();
@@ -41,20 +44,21 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    private Timestamp getTimestampNow(){
-        try{
+    private Timestamp getTimestampNow() {
+        try {
             return new Timestamp(format.parse(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-                    .toString().replace('T', ' '))
+                            .toString().replace('T', ' '))
                     .getTime());
-        } catch (Exception e){
-            throw new RuntimeException("Cant get current time: " + e);
+        } catch (Exception e) {
+            logger.error("CANNOT GET CURRENT TIME " + e.getMessage());
+            throw new RuntimeException("Cant get current time: " + e.getMessage());
         }
     }
 
-    private Timestamp getTimestamp(String dateTime){
-        try{
+    private Timestamp getTimestamp(String dateTime) {
+        try {
             return new Timestamp(format.parse(dateTime).getTime());
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Cant convert to timestamp: " + e);
         }
     }
@@ -83,28 +87,33 @@ public class ProductService {
         final Pattern pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}", Pattern.CASE_INSENSITIVE);
         final Matcher matcher = pattern.matcher(date);
 
-        if(matcher.matches()){
+        if (matcher.matches()) {
             String date_start = date + " 00:00:00";
             String date_end = date + " 23:59:59";
 
             return productRepository.findByLastModified(getTimestamp(date_start), getTimestamp(date_end));
         }
-        System.err.println("INVALID DATE FORMAT");
+        logger.error("INVALID DATE FORMAT");
         return null;
     }
 
     public Product getProductById(long id) {
-        if(productRepository.existsById(id)){
+        if (productRepository.findById(id).isPresent()) {
             return productRepository.findById(id).get();
         } else
-            return null;
+            logger.error("NO PRODUCT FOUND FOR GIVEN ID");
+        return null;
     }
 
     public void updateProductById(long id, ProductDTO productDTO) {
-        if(productRepository.existsById(id)){
+        if (productRepository.existsById(id)
+                && warehouseRepository.findById(productDTO.getWarehouseId()).isPresent()
+                && warehouseRepository.findById(productDTO.getDestinationId()).isPresent()) {
             productRepository.updateProduct(productDTO.getName(), productDTO.getDescription(), productDTO.getProductType(),
                     productDTO.getPrice(), productDTO.getStatus(), warehouseRepository.findById(productDTO.getWarehouseId()).get(),
                     warehouseRepository.findById(productDTO.getDestinationId()).get(), getTimestampNow(), id);
+        } else {
+            logger.error("PRODUCT OR WAREHOUSES NOT FOUND");
         }
     }
 
