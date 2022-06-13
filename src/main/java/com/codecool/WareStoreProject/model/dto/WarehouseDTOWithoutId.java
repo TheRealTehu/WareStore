@@ -13,7 +13,7 @@ public class WarehouseDTOWithoutId {
     @NotBlank
     private String name;
     @NotBlank
-    @Pattern(regexp = "[1-9][0-9]{3}\\s[A-Z][a-z]+\\s[A-Z][a-z]+.*[a-zA-Z]+\\s[a-zA-Z][a-z]+\\s[0-9]+",
+    @Pattern(regexp = "[1-9][0-9]{3}\\s[A-ZÁÉÚÖÓÜŐŰ][a-záéúőóüűö]+\\s[A-ZÁÉÚÖÓÜŐŰ][a-záéúőóüűö]+.*[a-zA-ZÁÉÚÖÓÜŐŰáéúőóüűö]+\\s[a-zA-ZÁÉÚÖÓÜŐŰáéúőóüűö][a-záéúőóüűö]+\\s[0-9]+",
             message = "Correct address format: 9999 Cityname Street Name street 99")
     private String address;
     @JsonProperty("storage_space")

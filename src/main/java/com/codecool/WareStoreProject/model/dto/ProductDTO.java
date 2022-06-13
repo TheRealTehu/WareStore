@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -14,9 +16,11 @@ public class ProductDTO {
     @NotBlank
     private String name;
     @NotBlank
+    @Max(500)
     private String description;
     @JsonProperty("product_type")
     private ProductType productType;
+    @Min(value = 0, message = "CANNOT BE NEGATIVE")
     private int price;
     private ProductStatus status;
     @JsonProperty("warehouse_id")

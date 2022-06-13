@@ -4,15 +4,18 @@ import com.codecool.WareStoreProject.model.dto.ProductDTO;
 import com.codecool.WareStoreProject.model.enums.ProductStatus;
 import com.codecool.WareStoreProject.model.enums.ProductType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @Entity
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,5 +59,18 @@ public class Product {
         this.status = productDTO.getStatus();
         this.warehouse = warehouse;
         this.destination = destination;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
