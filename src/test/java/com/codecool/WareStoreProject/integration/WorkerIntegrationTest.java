@@ -1,7 +1,6 @@
 package com.codecool.WareStoreProject.integration;
 
 import com.codecool.WareStoreProject.GenericArrayContentEqual;
-import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.Warehouse;
 import com.codecool.WareStoreProject.model.Workday;
 import com.codecool.WareStoreProject.model.Worker;
