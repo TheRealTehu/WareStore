@@ -1,15 +1,13 @@
-package com.codecool.WareStoreProject;
+package com.codecool.WareStoreProject.integration;
 
+import com.codecool.WareStoreProject.GenericArrayContentEqual;
 import com.codecool.WareStoreProject.model.Product;
 import com.codecool.WareStoreProject.model.Warehouse;
 import com.codecool.WareStoreProject.model.Worker;
 import com.codecool.WareStoreProject.model.dto.WarehouseDTOWithoutId;
 import com.codecool.WareStoreProject.model.enums.ProductStatus;
 import com.codecool.WareStoreProject.model.enums.ProductType;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -27,8 +25,7 @@ class WarehouseIntegrationTest {
     private TestRestTemplate testRestTemplate;
 
     private final String warehouseBaseUrl = "/warehouse";
-    private final String productBaseUrl = "/product";
-    private final String workerBaseUrl = "/worker";
+
     private final Warehouse[] databaseData = {
             new Warehouse(1L, "Center Location", "1011 Budapest Imagine Street 405",
                     1500, 30, 10, 30),
@@ -37,7 +34,10 @@ class WarehouseIntegrationTest {
             new Warehouse(3L, "Store Sárpospatak", "3456 Sárpospatak Never Street 7",
                     765, 5, 7, 14)
     };
-    private Warehouse testWarehouse = new Warehouse(4L, "Test Name", "1234 Test City Test street 01",
+    private Warehouse expected = new Warehouse(4L, "Test Name", "1234 Test City Test street 01",
+            1000, 10, 100, 100);
+
+    private WarehouseDTOWithoutId testDTO = new WarehouseDTOWithoutId("Test Name", "1234 Test City Test street 01",
             1000, 10, 100, 100);
 
     @Test
@@ -48,18 +48,18 @@ class WarehouseIntegrationTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        assertTrue(GenericArrayContentEqual.isEqual(databaseData, responseEntity.getBody()));
+        Assertions.assertTrue(GenericArrayContentEqual.isEqual(databaseData, responseEntity.getBody()));
     }
 
     @Test
     @Order(2)
     void addWarehouseTest() {
-        HttpEntity<Warehouse> httpEntity = createWarehouseHttpEntity(testWarehouse);
+        HttpEntity<WarehouseDTOWithoutId> httpEntity = createWarehouseDTOHttpEntity(testDTO);
         ResponseEntity<Warehouse> responseEntity = testRestTemplate.postForEntity(warehouseBaseUrl, httpEntity, Warehouse.class);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        assertEquals(testWarehouse, responseEntity.getBody());
+        assertEquals(expected, responseEntity.getBody());
     }
 
     @Test
@@ -69,7 +69,7 @@ class WarehouseIntegrationTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        assertEquals(testWarehouse, responseEntity.getBody());
+        assertEquals(expected, responseEntity.getBody());
     }
 
     @Test
@@ -79,7 +79,7 @@ class WarehouseIntegrationTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        assertEquals(testWarehouse, responseEntity.getBody());
+        assertEquals(expected, responseEntity.getBody());
     }
 
     @Test
@@ -89,7 +89,7 @@ class WarehouseIntegrationTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        assertEquals(testWarehouse, responseEntity.getBody());
+        assertEquals(expected, responseEntity.getBody());
     }
 
     @Test
@@ -165,22 +165,9 @@ class WarehouseIntegrationTest {
         return num > 0;
     }
 
-    private HttpEntity<Warehouse> createWarehouseHttpEntity(Warehouse warehouse) {
+    private HttpEntity<WarehouseDTOWithoutId> createWarehouseDTOHttpEntity(WarehouseDTOWithoutId warehouseDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(warehouse, httpHeaders);
+        return new HttpEntity<>(warehouseDTO, httpHeaders);
     }
-
-    private HttpEntity<Product> createProductHttpEntity(Product product) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(product, httpHeaders);
-    }
-
-    private HttpEntity<Worker> createWorkerHttpEntity(Worker worker) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(worker, httpHeaders);
-    }
-
 }

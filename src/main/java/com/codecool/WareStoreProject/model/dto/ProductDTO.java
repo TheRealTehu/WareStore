@@ -16,7 +16,6 @@ public class ProductDTO {
     @NotBlank
     private String name;
     @NotBlank
-    @Max(500)
     private String description;
     @JsonProperty("product_type")
     private ProductType productType;

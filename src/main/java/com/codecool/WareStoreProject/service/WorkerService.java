@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,8 @@ public class WorkerService {
     private WorkerJPARepository workerRepository;
     private WorkdayJPARepository workdayJPARepository;
     private WarehouseJPARepository warehouseJPARepository;
-    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat formatForString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatForNow = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private final Pattern monthPattern = Pattern.compile("[0-9]{2}", Pattern.CASE_INSENSITIVE);
     private final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}", Pattern.CASE_INSENSITIVE);
     private final Logger logger = LogManager.getLogger(WorkerService.class);
@@ -126,7 +128,7 @@ public class WorkerService {
 
     private Timestamp getTimestamp(String dateTime) {
         try {
-            return new Timestamp(format.parse(dateTime).getTime());
+            return new Timestamp(formatForString.parse(dateTime).getTime());
         } catch (Exception e) {
             logger.error("CANNOT CONVERT TO TIMESTAMP " + e.getMessage());
             throw new RuntimeException("Cant convert to timestamp: " + e.getMessage());
@@ -135,10 +137,9 @@ public class WorkerService {
 
     private Timestamp getTimestampNow() {
         try {
-            return new Timestamp(format.parse(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-                    .toString().replace('T', ' ')).getTime());
+            return Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(formatForNow)
+                    .replace('T', ' '));
         } catch (Exception e) {
-            logger.error("CANNOT GET CURRENT TIME " + e.getMessage());
             throw new RuntimeException("Cant get current time: " + e.getMessage());
         }
     }

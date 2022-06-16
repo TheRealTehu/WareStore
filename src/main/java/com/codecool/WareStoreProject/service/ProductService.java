@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,9 +24,10 @@ import java.util.regex.Pattern;
 
 @Service
 public class ProductService {
-    private ProductJPARepository productRepository;
-    private WarehouseJPARepository warehouseRepository;
-    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final ProductJPARepository productRepository;
+    private final WarehouseJPARepository warehouseRepository;
+    private final SimpleDateFormat formatForStringInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatForNow = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private final Logger logger = LogManager.getLogger(ProductService.class);
 
     @Autowired
@@ -35,7 +37,6 @@ public class ProductService {
     }
 
     public Product addProduct(ProductDTO productDTO) {
-
         Warehouse warehouse = warehouseRepository.findById(productDTO.getWarehouseId()).get();
         Warehouse destination = warehouseRepository.findById(productDTO.getDestinationId()).get();
         Product product = new Product(productDTO, warehouse, destination);
@@ -46,18 +47,16 @@ public class ProductService {
 
     private Timestamp getTimestampNow() {
         try {
-            return new Timestamp(format.parse(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)
-                            .toString().replace('T', ' '))
-                    .getTime());
+            return Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).format(formatForNow)
+                    .replace('T', ' '));
         } catch (Exception e) {
-            logger.error("CANNOT GET CURRENT TIME " + e.getMessage());
             throw new RuntimeException("Cant get current time: " + e.getMessage());
         }
     }
 
     private Timestamp getTimestamp(String dateTime) {
         try {
-            return new Timestamp(format.parse(dateTime).getTime());
+            return new Timestamp(formatForStringInput.parse(dateTime).getTime());
         } catch (Exception e) {
             throw new RuntimeException("Cant convert to timestamp: " + e);
         }
