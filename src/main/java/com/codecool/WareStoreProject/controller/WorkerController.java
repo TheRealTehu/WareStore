@@ -7,18 +7,23 @@ import com.codecool.WareStoreProject.service.WorkerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/worker")
 public class WorkerController {
-    private WorkerService service;
+    private final WorkerService service;
     private final Logger logger = LogManager.getLogger(WorkerController.class);
+    private final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}", Pattern.CASE_INSENSITIVE);
 
     @Autowired
     public WorkerController(WorkerService service) {
@@ -26,15 +31,15 @@ public class WorkerController {
     }
 
     @PostMapping
-    public Worker addWorker(@Valid @RequestBody WorkerDTO workerDTO, BindingResult br) {
+    public ResponseEntity<Worker> addWorker(@Valid @RequestBody WorkerDTO workerDTO, BindingResult br) {
         if (br.hasErrors()) {
             logger.warn("CANNOT ADD WORKER");
             for (ObjectError error: br.getAllErrors()) {
                 logger.error(error.getDefaultMessage());
             }
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } else {
-            return service.addWorker(workerDTO);
+            return new ResponseEntity<>(service.addWorker(workerDTO), HttpStatus.OK);
         }
     }
 
@@ -55,14 +60,30 @@ public class WorkerController {
 
     //TODO: refactor to use requestparam
     @GetMapping("/salary/{id}/month/{month}")
-    public Double getWorkersSalaryInMonth(@PathVariable("id") long id, @PathVariable("month") String month) {
-        return service.getWorkersSalaryInMonth(id, month);
+    public ResponseEntity<Double> getWorkersSalaryInMonth(@PathVariable("id") long id, @PathVariable("month") String month) {
+        Pattern monthPattern = Pattern.compile("[0-9]{2}", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = monthPattern.matcher(month);
+        if (matcher.matches()) {
+            return new ResponseEntity<>(service.getWorkersSalaryInMonth(id, month), HttpStatus.OK);
+        } else {
+            logger.error("INVALID MONTH FORMAT");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     //TODO: refactor to use requestparam
     @GetMapping("/salary/{id}/start/{start}/end/{end}")
-    public Double getWorkersSalaryBetweenDates(@PathVariable("id") long id, @PathVariable("start") String start, @PathVariable("end") String end) {
-        return service.getWorkersSalaryBetweenDates(id, start, end);
+    public ResponseEntity<Double> getWorkersSalaryBetweenDates(@PathVariable("id") long id,
+                                                               @PathVariable("start") String start,
+                                                               @PathVariable("end") String end) {
+        Matcher matcher1 = datePattern.matcher(start);
+        Matcher matcher2 = datePattern.matcher(end);
+        if (matcher1.matches() && matcher2.matches()) {
+            return new ResponseEntity<>(service.getWorkersSalaryBetweenDates(id, start, end), HttpStatus.OK);
+        } else {
+            logger.error("INVALID DATE FORMAT");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     //TODO: refactor to use requestparam
@@ -77,14 +98,16 @@ public class WorkerController {
     }
 
     @PutMapping("/id/{id}")
-    public void updateWorkerById(@PathVariable("id") long id, @Valid @RequestBody WorkerDTO workerDTO, BindingResult br) {
+    public ResponseEntity<String> updateWorkerById(@PathVariable("id") long id, @Valid @RequestBody WorkerDTO workerDTO, BindingResult br) {
         if (br.hasErrors()) {
             logger.warn("CANNOT UPDATE WORKER");
             for (ObjectError error: br.getAllErrors()) {
                 logger.error(error.getDefaultMessage());
             }
+            return new ResponseEntity<>("Update failed", HttpStatus.BAD_REQUEST);
         } else {
             service.updateWorkerById(id, workerDTO);
+            return new ResponseEntity<>("Worker updated", HttpStatus.OK);
         }
     }
 

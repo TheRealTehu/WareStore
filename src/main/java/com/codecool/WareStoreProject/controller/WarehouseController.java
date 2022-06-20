@@ -8,12 +8,16 @@ import com.codecool.WareStoreProject.service.WarehouseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/warehouse")
@@ -27,15 +31,15 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public Warehouse addWarehouse(@Valid @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId, BindingResult br) {
+    public ResponseEntity<Warehouse> addWarehouse(@Valid @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId, BindingResult br) {
         if (br.hasErrors()) {
             logger.warn("CANNOT ADD WAREHOUSE");
             for (ObjectError error : br.getAllErrors()) {
                 logger.error(error.getDefaultMessage());
             }
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } else {
-            return service.addWarehouse(warehouseDTOWithoutId);
+            return new ResponseEntity<>(service.addWarehouse(warehouseDTOWithoutId), HttpStatus.OK);
         }
     }
 
@@ -55,8 +59,13 @@ public class WarehouseController {
     }
 
     @GetMapping("/address/{address}")
-    public Warehouse getWarehouseByAddress(@PathVariable("address") String address) {
-        return service.getWarehouseByAddress(address);
+    public ResponseEntity<Warehouse> getWarehouseByAddress(@PathVariable("address") String address) {
+        if (validAddress(address)) {
+            return new ResponseEntity<>(service.getWarehouseByAddress(address), HttpStatus.OK);
+        } else {
+            System.err.println("INVALID ADDRESS");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/warehouse/{id}")
@@ -70,20 +79,29 @@ public class WarehouseController {
     }
 
     @PutMapping("/id/{id}")
-    public void updateWarehouseById(@PathVariable("id") long id,
+    public ResponseEntity<String> updateWarehouseById(@PathVariable("id") long id,
                                     @Valid @RequestBody WarehouseDTOWithoutId warehouseDTOWithoutId, BindingResult br) {
         if (br.hasErrors()) {
             logger.warn("CANNOT UPDATE WAREHOUSE");
             for (ObjectError error: br.getAllErrors()) {
                 logger.error(error.getDefaultMessage());
             }
+            return new ResponseEntity<>("Update failed", HttpStatus.BAD_REQUEST);
         } else {
             service.updateWarehouseById(id, warehouseDTOWithoutId);
+            return new ResponseEntity<>("Warehouse updated", HttpStatus.OK);
         }
     }
 
     @DeleteMapping("/id/{id}")
     public void deleteWarehouseById(@PathVariable long id) {
         service.deleteWarehouseById(id);
+    }
+
+    private boolean validAddress(String address) {
+        Pattern addressPattern = Pattern.compile(
+                "[1-9][0-9]{3}\\s[A-Z][a-z]+\\s[A-Z][a-z]+.*[a-zA-Z]+\\s[a-zA-Z][a-z]+\\s[0-9]+");
+        Matcher matcher = addressPattern.matcher(address);
+        return matcher.matches();
     }
 }

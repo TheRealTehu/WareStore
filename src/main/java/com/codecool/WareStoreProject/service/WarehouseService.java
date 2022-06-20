@@ -14,16 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class WarehouseService {
-    private WarehouseJPARepository warehouseRepository;
-    private WarehouseNeededWorkerJPARepository warehouseNeededWorkerRepository;
-    private ProductService productService;
-    private final Pattern addressPattern = Pattern.compile(
-            "[1-9][0-9]{3}\\s[A-Z][a-z]+\\s[A-Z][a-z]+.*[a-zA-Z]+\\s[a-zA-Z][a-z]+\\s[0-9]+");
+    private final WarehouseJPARepository warehouseRepository;
+    private final WarehouseNeededWorkerJPARepository warehouseNeededWorkerRepository;
+    private final ProductService productService;
     private final Logger logger = LogManager.getLogger(WarehouseService.class);
 
     @Autowired
@@ -56,17 +52,7 @@ public class WarehouseService {
     }
 
     public Warehouse getWarehouseByAddress(String address) {
-        if (validAddress(address)) {
             return warehouseRepository.findByAddress(address);
-        } else {
-            System.err.println("INVALID ADDRESS");
-            return null;
-        }
-    }
-
-    private boolean validAddress(String address) {
-        Matcher matcher = addressPattern.matcher(address);
-        return matcher.matches();
     }
 
     public List<WarehouseDTOWithNeededWorkers> listWarehousesByNeededWorkers() {

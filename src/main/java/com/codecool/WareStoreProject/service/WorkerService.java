@@ -22,18 +22,14 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class WorkerService {
-    private WorkerJPARepository workerRepository;
-    private WorkdayJPARepository workdayJPARepository;
-    private WarehouseJPARepository warehouseJPARepository;
+    private final WorkerJPARepository workerRepository;
+    private final WorkdayJPARepository workdayJPARepository;
+    private final WarehouseJPARepository warehouseJPARepository;
     private final SimpleDateFormat formatForString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final DateTimeFormatter formatForNow = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-    private final Pattern monthPattern = Pattern.compile("[0-9]{2}", Pattern.CASE_INSENSITIVE);
-    private final Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}", Pattern.CASE_INSENSITIVE);
     private final Logger logger = LogManager.getLogger(WorkerService.class);
 
     @Autowired
@@ -66,29 +62,15 @@ public class WorkerService {
     }
 
     public Double getWorkersSalaryInMonth(long id, String month) {
-        Matcher matcher = monthPattern.matcher(month);
-        if (matcher.matches()) {
             return workerRepository.getSalaryBetweenDates(id, getTimestamp(getStartOfMonthDate(month)),
                     getTimestamp(getEndOfMonthDate(month)));
-        } else {
-            logger.error("INVALID MONTH FORMAT");
-            return null;
-        }
-
     }
 
     public Double getWorkersSalaryBetweenDates(long id, String start, String end) {
-        Matcher matcher1 = datePattern.matcher(start);
-        Matcher matcher2 = datePattern.matcher(end);
-
-        if (matcher1.matches() && matcher2.matches()) {
             String date_start = start + " 00:00:00";
             String date_end = end + " 23:59:59";
 
             return workerRepository.getSalaryBetweenDates(id, getTimestamp(date_start), getTimestamp(date_end));
-        }
-        System.err.println("INVALID DATE FORMAT");
-        return null;
     }
 
     public void addWorkToWorker(long workerId, long warehouseId, double hoursWorked) {

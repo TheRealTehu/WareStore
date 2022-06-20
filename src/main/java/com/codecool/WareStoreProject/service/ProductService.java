@@ -19,8 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class ProductService {
@@ -37,8 +35,16 @@ public class ProductService {
     }
 
     public Product addProduct(ProductDTO productDTO) {
-        Warehouse warehouse = warehouseRepository.findById(productDTO.getWarehouseId()).get();
-        Warehouse destination = warehouseRepository.findById(productDTO.getDestinationId()).get();
+        Warehouse warehouse, destination;
+
+        if(warehouseRepository.findById(productDTO.getWarehouseId()).isPresent() &&
+                warehouseRepository.findById(productDTO.getDestinationId()).isPresent()){
+            warehouse = warehouseRepository.findById(productDTO.getWarehouseId()).get();
+            destination = warehouseRepository.findById(productDTO.getDestinationId()).get();
+        } else {
+            logger.error("WAREHOUSE OR DESTINATION NOT FOUND");
+            return null;
+        }
         Product product = new Product(productDTO, warehouse, destination);
         product.setLastModified(getTimestampNow());
 
@@ -83,17 +89,10 @@ public class ProductService {
     }
 
     public List<Product> getProductByModificationDate(String date) {
-        final Pattern pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}", Pattern.CASE_INSENSITIVE);
-        final Matcher matcher = pattern.matcher(date);
-
-        if (matcher.matches()) {
             String date_start = date + " 00:00:00";
             String date_end = date + " 23:59:59";
 
             return productRepository.findByLastModified(getTimestamp(date_start), getTimestamp(date_end));
-        }
-        logger.error("INVALID DATE FORMAT");
-        return null;
     }
 
     public Product getProductById(long id) {
