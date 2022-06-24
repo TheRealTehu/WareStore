@@ -37,12 +37,12 @@ public class Product {
     @Column(name="status", nullable=false)
     private ProductStatus status;
 
-    @JsonProperty("warehouse_id")
+    @JsonProperty("warehouse")
     @ManyToOne(optional = false)
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_product_warehouse"))
     private Warehouse warehouse;
 
-    @JsonProperty("destination_id")
+    @JsonProperty("destination")
     @ManyToOne(optional = false)
     @JoinColumn(name = "destination_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_product_destination"))
     private Warehouse destination;

@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/warehouse")
 public class WarehouseController {
-    private WarehouseService service;
+    private final WarehouseService service;
     private final Logger logger = LogManager.getLogger(WarehouseController.class);
 
     @Autowired
@@ -100,7 +100,7 @@ public class WarehouseController {
 
     private boolean validAddress(String address) {
         Pattern addressPattern = Pattern.compile(
-                "[1-9][0-9]{3}\\s[A-Z][a-z]+\\s[A-Z][a-z]+.*[a-zA-Z]+\\s[a-zA-Z][a-z]+\\s[0-9]+");
+                "[1-9][0-9]{3}\\s[A-ZÁÉÚŐÓÜÖÍŰ][a-záéúőóüöíű]+\\s[A-ZÁÉÚŐÓÜÖÍŰ][a-záéúőóüöíű]+.*[a-záéúőóüöíűA-ZÁÉÚŐÓÜÖÍŰ]+\\s[a-záéúőóüöíűA-ZÁÉÚŐÓÜÖÍŰ][a-záéúőóüöíű]+\\s[0-9]+");
         Matcher matcher = addressPattern.matcher(address);
         return matcher.matches();
     }

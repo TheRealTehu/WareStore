@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-    private ProductService service;
+    private final ProductService service;
     private final Logger logger = LogManager.getLogger(ProductController.class);
 
     public ProductController(ProductService service) {
