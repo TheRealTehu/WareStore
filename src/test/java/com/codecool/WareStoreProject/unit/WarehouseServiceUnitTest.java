@@ -14,22 +14,21 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class WarehouseServiceTest {
+public class WarehouseServiceUnitTest {
 
    @InjectMocks
-   WarehouseService warehouseService;
+    private WarehouseService warehouseService;
 
    @Mock
-   WarehouseJPARepository mockWarehouseRepository;
+   private WarehouseJPARepository mockWarehouseRepository;
    @Mock
-   ProductService mockProductService;
+   private ProductService mockProductService;
 
    @Test
    public void unitTestGetAllWarehouses(){
@@ -57,7 +56,6 @@ public class WarehouseServiceTest {
               1000, 10, 100, 100);
 
       when(mockWarehouseRepository.findById(1L)).thenReturn(Optional.of(testWarehouse));
-      //when(mockWarehouseRepository.findById(1L).isPresent()).thenReturn(true);
 
       Assertions.assertEquals(testWarehouse, warehouseService.getWarehouseById(1L));
    }
@@ -110,6 +108,13 @@ public class WarehouseServiceTest {
 
       verify(mockWarehouseRepository, times(1)).updateWarehouse("Test Warehouse",
               "1234 Test City Test street 01", 1000, 10, 100, 100, 1L);
+   }
+
+   @Test
+   public void unitTestDeleteWarehouseById(){
+      warehouseService.deleteWarehouseById(1L);
+
+      verify(mockWarehouseRepository, times(1)).deleteById(1L);
    }
 
 }
