@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  warestoredb:
+    image: postgres:14.3-alpine
+    container_name: warestoredb
+    environment:
+      POSTGRES_DB: warestoredb
+      POSTGRES_USER: warestoreuser
+      POSTGRES_PASSWORD: warepass
+    ports:
+      - "5433:5432"
+
+  warestore_app:
+    image: warestore_app
+    build:
+      context: .
+    container_name: warestore_app
+    depends_on:
+      - warestoredb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:6666/warestoredb
+      - SPRING_DATASOURCE_USERNAME=warestoreuser
+      - SPRING_DATASOURCE_PASSWORD=warepass
+      - warestore_url=jdbc:postgresql://localhost:6666/warestoredb
+      - warestore_test_url=jdbc:postgresql://localhost:6666/warestoredb_test
+    ports:
+      - "8080:8080"
