@@ -15,6 +15,10 @@ TESZTELÉS:
     Tesztek futtatása előtt flyway.conf fájl végén az URL-t ki kell cserélni 
     a teszt URL-re, amely megtalálható a flyway.conf fájl végén kommentben.
 
+    Integrációs tesztek után flyway clean parancs kiadása kötelező!
+
+    TESZTELÉS CSAK A TESZT ADATBÁZISON MEGENGEDETT!
+
 VÉGPONTOK:
 
     PRODUCT:
