@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: warestoreuser
       POSTGRES_PASSWORD: warepass
     ports:
-      - "6666:5432"
+      - "5433:5432"
 
   warestore_app:
     image: warestore_app
@@ -19,10 +19,9 @@ services:
     depends_on:
       - warestoredb
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:6666/warestoredb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://warestoredb:5432/warestoredb
       - SPRING_DATASOURCE_USERNAME=warestoreuser
       - SPRING_DATASOURCE_PASSWORD=warepass
-      - warestore_url=jdbc:postgresql://localhost:6666/warestoredb
-      - warestore_test_url=jdbc:postgresql://localhost:6666/warestoredb_test
+      - warestore_url=jdbc:postgresql://warestoredb:5432/warestoredb
     ports:
       - "8080:8080"
