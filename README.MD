@@ -2,9 +2,7 @@ WARESTORE PROJECT
 
 Kiskereskedelmi cégek raktározási, számlázási, HR és webshop alkalmazásának első sprintje.
 
-Cél: Raktározási és HR funkcionalitás alapjainak megteremtése.
-
-Teszt verzió használata:
+Sprint cél: Raktározási és HR funkcionalitás alapjainak megteremtése.
 
 FUTTATÁS:
 
@@ -90,7 +88,7 @@ ADATBÁZISOK:
         USER: warestoreuser
         PASSWORD: warepass
 
-    Megfelelő adatbázist a flyway.conf fájl végén cseráéni kell!
+    Megfelelő adatbázist a flyway.conf fájl végén cserélni kell!
 
 Szükséges enviroment variable:
 
