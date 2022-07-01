@@ -7,15 +7,20 @@ Sprint cél: Raktározási és HR funkcionalitás alapjainak megteremtése.
 FUTTATÁS:
 
     Operációs rendszernek megfelelően run_app.bat vagy run_app.sh indítása.
+    Ezután elérhetőek a végpontok a localhost:8080-as portján.
+    Az egyszerűbb ellenőrzés érdekében a project mappájában megtalálható egy
+    
+    Warestore_Collection.postman_collection.json
+
+    nevű fájl. Melyet Postman-be importálva gyorsan és egyszerűen
+    indíthatjuk és ellenőrizhetjük az összes végpont működését.
 
 TESZTELÉS:
+    
+    Windows: Command Promptból docker_testdb.bat indítása.
 
-    Tesztek futtatása előtt flyway.conf fájl végén az URL-t ki kell cserélni 
-    a teszt URL-re, amely megtalálható a flyway.conf fájl végén kommentben.
-
-    Integrációs tesztek után flyway clean parancs kiadása kötelező!
-
-    TESZTELÉS CSAK A TESZT ADATBÁZISON MEGENGEDETT!
+    Linux: docker_testdb.sh indítása.
+    
 
 VÉGPONTOK:
 
@@ -76,25 +81,16 @@ VÉGPONTOK:
                                Requestbody: WorkerDTO
         DELETE: /worker/id/{id} - adott ID-ű Worker törlése
 
-ADATBÁZISOK:
+ADATBÁZISOK (IntellIj-ből való indításhoz léterhozandó):
 
         Production adatbázis: 
-        URL: jdbc:postgresql://localhost:6666/warestoredb
-        USER: warestoreuser
-        PASSWORD: warepass
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:6666/warestoredb
+        SPRING_DATASOURCE_USERNAME: warestoreuser
+        SPRING_DATASOURCE_PASSWORD: warepass
 
         Test adatbázis: 
-        URL: jdbc:postgresql://localhost:6666/warestoredb_test
-        USER: warestoreuser
-        PASSWORD: warepass
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:6666/warestoredb_test
+        SPRING_DATASOURCE_USERNAME: warestoreuser
+        SPRING_DATASOURCE_PASSWORD: warepass
 
     Megfelelő adatbázist a flyway.conf fájl végén cserélni kell!
-
-Szükséges enviroment variable:
-
-        DB_USER=warestoreuser;
-        DB_PASS=warepass;
-        DB_URL=jdbc:postgresql://localhost:6666/warestoredb
-        
-        Teszt futtatás esetén:
-        DB_URL=jdbc:postgresql://localhost:6666/warestoredb_test
