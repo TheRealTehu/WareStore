@@ -1,0 +1,639 @@
+{
+	"info": {
+		"_postman_id": "8d1ef0eb-2574-4fbf-a28e-827995b66031",
+		"name": "Warestore Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19622451"
+	},
+	"item": [
+		{
+			"name": "Warehouse requests",
+			"item": [
+				{
+					"name": "List all warehouses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get warehouse by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse/id/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"id",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get warehouse by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse/name/Store Budakeszi",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"name",
+								"Store Budakeszi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get warehouse by address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse/address/3456 Sárpospatak Never Street 7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"address",
+								"3456 Sárpospatak Never Street 7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all products in a warehouse",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse/warehouse/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"warehouse",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List warehouses order by needed workforce",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse/workers_needed",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"workers_needed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new warehouse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Newestest Locationplace\",\r\n    \"address\": \"1630 Kálkoty Jókai utca 3\",\r\n    \"storage_space\": 500,\r\n    \"num_of_workers\": 2,\r\n    \"req_workers\": 10,\r\n    \"max_workers\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/warehouse/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update warehouse",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"NEW Center Location\",\r\n    \"address\": \"1011 Newdapest Imagine Street 405\",\r\n    \"storage_space\": 2500,\r\n    \"num_of_workers\": 30,\r\n    \"req_workers\": 20,\r\n    \"max_workers\": 40\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/warehouse/id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete warehouse",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/warehouse/id/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"warehouse",
+								"id",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product requests",
+			"item": [
+				{
+					"name": "List all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/id/9",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"id",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/name/Fifa",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"name",
+								"Fifa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/type/game",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"type",
+								"game"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products by status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/status/in_storage",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"status",
+								"in_storage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products by last modification date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/date/2022-05-10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"date",
+								"2022-05-10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Fifa\",\r\n    \"description\": \"Football videogame\",\r\n    \"price\": 112000,\r\n    \"status\": \"MOVING\",\r\n    \"product_type\": \"GAME\",\r\n    \"warehouse_id\": 1,\r\n    \"destination_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/product/id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/product/id/10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"id",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Flogging Molly\",\r\n    \"description\": \"Its not even a videogame\",\r\n    \"price\": 666,\r\n    \"status\": \"MOVING\",\r\n    \"product_type\": \"GAME\",\r\n    \"warehouse_id\": 3,\r\n    \"destination_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Worker requests",
+			"item": [
+				{
+					"name": "List all workers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get worker by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/id/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"id",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List workers by position",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/position/warehouse_worker",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"position",
+								"warehouse_worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add worker",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New IT Guy\",\r\n    \"position\": \"IT_WORKER\",\r\n    \"salary\": 2700.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/worker/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get workers salary in given month current year",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/salary/1/month/05",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"salary",
+								"1",
+								"month",
+								"05"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get workers salary between two dates",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/salary/1/start/2022-03-10/end/2022-06-20",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"salary",
+								"1",
+								"start",
+								"2022-03-10",
+								"end",
+								"2022-06-20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add work to worker",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/work/id/1/warehouse/1/hours/8",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"work",
+								"id",
+								"1",
+								"warehouse",
+								"1",
+								"hours",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all workdays for worker",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/work/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"work",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update worker",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Big Boss\",\r\n    \"position\": \"BOSS\",\r\n    \"salary\": 6000.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/worker/id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete worker",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/worker/id/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"worker",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
