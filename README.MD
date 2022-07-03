@@ -6,20 +6,34 @@ Sprint cél: Raktározási és HR funkcionalitás alapjainak megteremtése.
 
 FUTTATÁS:
 
-    Operációs rendszernek megfelelően run_app.bat vagy run_app.sh indítása.
-    Ezután elérhetőek a végpontok a localhost:8080-as portján.
-    Az egyszerűbb ellenőrzés érdekében a project mappájában megtalálható egy
-    
-    Warestore_Collection.postman_collection.json
+        Windows: run_app.bat
 
-    nevű fájl. Melyet Postman-be importálva gyorsan és egyszerűen
-    indíthatjuk és ellenőrizhetjük az összes végpont működését.
+        Linux: run_app.sh
+
+        indítása.
+        Ezután elérhetőek a végpontok a localhost:8080-as portján.
+        Az egyszerűbb ellenőrzés érdekében a project mappájában megtalálható egy
+    
+        Warestore_Collection.postman_collection.json
+
+        nevű fájl. Melyet Postman-be importálva gyorsan és egyszerűen
+        indíthatjuk és ellenőrizhetjük az összes végpont működését.
 
 TESZTELÉS:
     
-    Windows: Command Promptból docker_testdb.bat indítása.
+    Windows: Command Promptból docker_run_tests_on_db.bat indítása.
 
-    Linux: docker_testdb.sh indítása.
+    Linux: docker_run_tests_on_db.sh indítása.
+
+    A tesztelefedettség kiértékeléséről a target/site/jacoco/index.html-ből
+    lehet értesülni. (Figyelem: A százalékok nem egyeznek az IntellIJ 
+    run tests with coverage százalékos eredményével!)
+
+    Igény szerinti IntellIJ-ből való teszteléshez csak adatbázis indítása:
+        
+        Windows: run_db.bat
+
+        Linux: run_db.sh
     
 
 VÉGPONTOK:
@@ -81,7 +95,7 @@ VÉGPONTOK:
                                Requestbody: WorkerDTO
         DELETE: /worker/id/{id} - adott ID-ű Worker törlése
 
-ADATBÁZISOK (IntellIj-ből való indításhoz léterhozandó):
+ADATBÁZISOK (Docker problémák eseten IntellIj-ből való indításhoz léterhozandó):
 
         Production adatbázis: 
         SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:6666/warestoredb
